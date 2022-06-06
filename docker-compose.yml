@@ -11,14 +11,14 @@ services:
       - ./app.py:/app/app.py
     labels:
       - traefik.enable=true
-      - traefik.http.middlewares.itkauth.basicauth.usersfile=${ITKAUTHFILE}
+      - traefik.http.middlewares.yarrauth.basicauth.usersfile=${YARRAUTHFILE}
       - traefik.http.routers.yarr-inspector.rule=Host(`${HOST}`) && PathPrefix(`/yarr`) 
       - traefik.http.routers.yarr-inspector.entrypoints=websecure
       - traefik.http.routers.yarr-inspector.tls.certresolver=le
       - traefik.http.services.yarr-inspector.loadbalancer.server.port=8501
       - traefik.http.middlewares.stripyarr.stripprefix.prefixes=/yarr
       - traefik.http.middlewares.stripyarr.stripprefix.forceSlash=true
-      - traefik.http.routers.yarr-inspector.middlewares=stripyarr@docker,itkauth@docker
+      - traefik.http.routers.yarr-inspector.middlewares=stripyarr@docker,yarrauth@docker
       - traefik.http.routers.yarr-inspector.service=yarr-inspector@docker
     networks:
       - reverse-proxy
