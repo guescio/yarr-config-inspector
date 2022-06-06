@@ -124,8 +124,8 @@ def inspectConfig(data):
         ax1.set_ylabel("rows")
         ax1.set_xlabel("columns")
         ax1.set_title("pixel mask")
-        cbar1 = plt.colorbar(im1, ticks = [0, 1], values = [0,1])
-        cbar1.ax.set_yticklabels([f"enabled\n({enabled})", f"disabled\n({(ncol*nrow)-enabled})"])
+        cbar1 = plt.colorbar(im1, ticks = [0, 1], values = [1, 0])
+        cbar1.set_ticklabels([f"disabled\n({(ncol*nrow)-enabled})", f"enabled\n({enabled})"])
         ax1.text(1.0, 1.0, name,
             fontsize="small",
             horizontalalignment="right",
@@ -198,8 +198,8 @@ def inspectEnMask(data):
         ax.set_ylabel("rows")
         ax.set_xlabel("columns")
         ax.set_title("pixel mask")
-        cbar = plt.colorbar(im, ticks = [0, 1], values = [0,1])
-        cbar.ax.set_yticklabels([f"enabled\n({enabled})", f"disabled\n({(ncol*nrow)-enabled})"])
+        cbar = plt.colorbar(im, ticks = [0, 1], values = [1, 0])
+        cbar.ax.set_yticklabels([f"disabled\n({(ncol*nrow)-enabled})", f"enabled\n({enabled})"])
 
         st.pyplot(fig)
 
