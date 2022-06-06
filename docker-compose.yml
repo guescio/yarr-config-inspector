@@ -10,7 +10,6 @@ services:
     volumes:
       - ./app.py:/app/app.py
       - .streamlit:/app/.streamlit
-      - .yarrauth:/.yarrauth
     labels:
       - traefik.enable=true
       - traefik.http.routers.yarrinspector.rule=Host(`${HOST}`) && PathPrefix(`/yarr`) 
@@ -19,7 +18,7 @@ services:
       - traefik.http.services.yarrinspector.loadbalancer.server.port=8501
       - traefik.http.middlewares.stripyarr.stripprefix.prefixes=/yarr
       - traefik.http.middlewares.stripyarr.stripprefix.forceSlash=true
-      - traefik.http.routers.yarrinspector.middlewares=stripyarr@docker,allowed-ips@docker,yarrauth@docker 
+      - traefik.http.routers.yarrinspector.middlewares=stripyarr@docker,yarrauth@docker #, allowed-ips@docker
       - traefik.http.routers.yarrinspector.service=yarrinspector@docker
     networks:
       - reverse-proxy
