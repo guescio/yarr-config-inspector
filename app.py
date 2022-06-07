@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 #******************************************
-#This is a tool to inspect YARR configuration and EnMask files.
+#This is a tool to inspect YARR configuration and mask files.
 
 #******************************************
 __author__ = "Francesco Guescini"
@@ -33,16 +33,16 @@ def main():
     #------------------------------------------
     #title
     st.sidebar.title("YARR config inspector")
-    #st.sidebar.write("An interface to inspect YARR config files.")
+    #st.sidebar.write("An interface to inspect YARR config and mask files.")
 
     #------------------------------------------
     #upload config file
     uploaded_file = st.sidebar.file_uploader(
-        "Upload a YARR configuration or EnMask file.",
+        "Upload a YARR configuration or mask file.",
         type=["json", "before", "after"],
         accept_multiple_files=False,
         key=None,
-        help="Upload a YARR configuration or EnMask file.")
+        help="Upload a YARR configuration or mask file.")
 
     #------------------------------------------
     #load data from the configuration file
@@ -55,7 +55,7 @@ def main():
             return
 
         #------------------------------------------
-        #config file or EnMask file?
+        #config file or mask file?
         try:
             key = list(data.keys())[0]
         except:
@@ -63,7 +63,7 @@ def main():
             return
 
         if key == "Data":
-            inspectEnMask(data)
+            inspectMask(data)
         elif "RD53" in key:
             inspectConfig(data)
 
@@ -83,14 +83,13 @@ def inspectConfig(data):
         name = ""
     container.text(f"name: {name}")
 
-    container.text(f"type: {chip_type}")
-
-    #------------------------------------------
     #get the number of rows and columns
     ncol = len(data[chip_type]["PixelConfig"])
     nrow = len(data[chip_type]["PixelConfig"][0]["Enable"])
-    container.text(f"size: {nrow} rows * {ncol} columns")
-    
+    #container.text(f"size: {nrow} rows * {ncol} columns")
+
+    container.text(f"type: {chip_type} ({nrow} rows * {ncol} columns)")
+
     #------------------------------------------
     #load config data into matrix
     e = np.zeros((nrow, ncol), dtype=int) #Enable
@@ -173,14 +172,16 @@ def inspectConfig(data):
     return
 
 #******************************************
-#inspect EnMask file
-def inspectEnMask(data):
+#inspect mask file
+def inspectMask(data):
 
     #------------------------------------------
     #load config data into matrix
+    scan = data["Name"]
+    container.text(f"scan: {scan}")
     e = np.array(data["Data"]).T
     nrow, ncol = np.shape(e)
-    container.text(f"chip size: {nrow} rows * {ncol} columns")
+    container.text(f"size: {nrow} rows * {ncol} columns")
 
     #------------------------------------------
     #count enabled pixels
